@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { signIn, signOut, signUp, getCurrentUser } from "./Logic/auth";
 
 export default function AuthPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,6 +22,15 @@ export default function AuthPage() {
       }
     });
   }, [router]);
+
+  // Keep internal mode in sync with the URL (/signin vs /signup)
+  useEffect(() => {
+    if (pathname === "/signup") {
+      setMode("signup");
+    } else {
+      setMode("signin");
+    }
+  }, [pathname]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +70,7 @@ export default function AuthPage() {
       <div className="w-full max-w-md bg-white/10 backdrop-blur rounded-2xl p-6 shadow-xl">
         <div className="flex items-center justify-center gap-2 mb-4">
           <button
-            onClick={() => setMode("signin")}
+            onClick={() => router.push("/signin")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
               mode === "signin"
                 ? "bg-emerald-500 text-white"
@@ -70,7 +80,7 @@ export default function AuthPage() {
             Sign in
           </button>
           <button
-            onClick={() => setMode("signup")}
+            onClick={() => router.push("/signup")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
               mode === "signup"
                 ? "bg-emerald-500 text-white"

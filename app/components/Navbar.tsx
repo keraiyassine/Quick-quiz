@@ -59,14 +59,7 @@ export default function Navbar() {
             >
               Sign out
             </button>
-          ) : (
-            <Link
-              href={pathname === "/signup" ? "/signup" : "/signin"}
-              className="text-sm px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm transition"
-            >
-              {pathname === "/signup" ? "Sign up" : "Sign in"}
-            </Link>
-          )}
+          ) : null}
         </div>
       </nav>
     </header>

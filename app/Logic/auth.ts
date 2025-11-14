@@ -9,6 +9,9 @@ export async function signUp(email: string, password: string, name?: string) {
     },
   });
   if (error) throw error;
+  // Supabase sends an email to activate the account.
+  // Only return minimal info; caller should inform user to check email
+  // and then redirect them to the sign-in page.
   return data.user;
 }
 

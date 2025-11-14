@@ -11,6 +11,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   useEffect(() => {
     // If already signed in, go to home
@@ -24,6 +25,7 @@ export default function AuthPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setInfo(null);
     if (!email || !password) {
       setError("Email and password are required.");
       return;
@@ -32,6 +34,13 @@ export default function AuthPage() {
     try {
       if (mode === "signup") {
         await signUp(email, password, name || undefined);
+        // Inform the user to activate their account via email,
+        // then send them to the sign-in view.
+        setInfo(
+          "Account created. Please check your email to activate your account, then sign in."
+        );
+        setMode("signin");
+        setPassword("");
       } else {
         await signIn(email, password);
       }
@@ -114,6 +123,12 @@ export default function AuthPage() {
           {error && (
             <p className="text-red-400 text-sm mt-1" role="alert">
               {error}
+            </p>
+          )}
+
+          {info && !error && (
+            <p className="text-emerald-300 text-sm mt-1" role="status">
+              {info}
             </p>
           )}
 

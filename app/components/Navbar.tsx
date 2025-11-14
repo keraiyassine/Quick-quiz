@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function Navbar() {
   const [email, setEmail] = useState<string | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     // Load current user
@@ -61,9 +62,9 @@ export default function Navbar() {
           ) : (
             <Link
               href="/"
-              className="text-sm px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white! shadow-sm transition"
+              className="text-sm px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm transition"
             >
-              Sign in
+              {pathname === "/signup" ? "Sign up" : "Sign in"}
             </Link>
           )}
         </div>
